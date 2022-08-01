@@ -1,0 +1,64 @@
+﻿syntax = "proto3";
+ 
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "TestPositionClient.Gateway";
+package positions;
+
+service PositionsService {
+	rpc Subscribe (PositionsSubscriptionRequestGrpcMessage) 
+		returns (stream PositionsSubscriptionResponseGrpcMessage);
+}
+
+message PositionsSubscriptionRequestGrpcMessage {
+
+}
+
+message UUID {
+  string value = 1;
+}
+
+message DateQuantityGrpc {
+	google.protobuf.Timestamp pos_date = 1;
+	float quantity = 2;
+}
+
+message CalculationDetailGrpc {
+	UUID detail_id = 1;
+	string product_category = 2;
+	string product = 3;
+	string source_product = 4;
+	google.protobuf.Timestamp calculation_date = 5;
+	float amount = 6;
+	int32 product_id = 7;
+	int32 source_product_id = 8;
+	string strip_name = 9;
+	google.protobuf.Int32Value portfolio_id = 10;
+	string product_category_abbreviation = 11;
+	repeated DateQuantityGrpc quantity_by_date = 12;
+}
+
+message RollOffDetailGrpc {
+	string category_name = 1;
+	string product_name = 2;
+	string source_product_name = 3;
+	string portfolio_name = 4;
+	float old_amount = 5;
+	float new_amount = 6;
+}
+
+enum PositionsResponseMessageType {
+	POSITIONS_RESPONSE_MESSAGE_TYPE_UNKNOWN = 0;
+	POSITIONS_RESPONSE_MESSAGE_TYPE_SNAPSHOT = 1;
+	POSITIONS_RESPONSE_MESSAGE_TYPE_UPDATE = 2;
+	POSITIONS_RESPONSE_MESSAGE_TYPE_REMOVE = 3;
+	POSITIONS_RESPONSE_MESSAGE_TYPE_ROLL_OFF_NOTIFICATION = 4;
+}
+
+message PositionsSubscriptionResponseGrpcMessage {
+	repeated CalculationDetailGrpc calculation_details = 1;
+	int32 last_sequence_number = 2;
+	PositionsResponseMessageType message_type = 3;
+	repeated RollOffDetailGrpc roll_off_details = 4;
+}
