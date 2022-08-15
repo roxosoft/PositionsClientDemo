@@ -1,0 +1,159 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "TestPositionClient.Gateway";
+package positions;
+
+service TradesService {
+	rpc GetSnapshot (TradesSnapshotRequestGrpcMessage) 
+		returns (TradesSnapshotResponseGrpcMessage);
+
+	rpc Subscribe (TradesSubscriptionRequestGrpcMessage) 
+		returns (stream TradesSubscriptionResponseGrpcMessage);
+}
+
+message ProductGrpc {
+    int32 product_id = 1;
+}
+
+message SecurityDefinitionGrpc {
+    google.protobuf.BoolValue clearable = 1;
+    google.protobuf.StringValue end_date = 2;
+    google.protobuf.StringValue exchange = 3;
+    google.protobuf.StringValue granularity = 4; 
+    google.protobuf.StringValue hub_alias = 5;
+    google.protobuf.Int32Value hub_id = 6;
+    google.protobuf.StringValue hub_name = 7;
+    google.protobuf.StringValue implied_type = 8; 
+    google.protobuf.FloatValue increment_price = 9;
+    google.protobuf.FloatValue increment_qty = 10;
+    google.protobuf.FloatValue increment_strike = 11;
+    google.protobuf.Int32Value lot_size = 12;
+    google.protobuf.FloatValue lot_size_multiplier = 13;
+    google.protobuf.FloatValue max_strike = 14;
+    google.protobuf.FloatValue min_strike = 15;
+    google.protobuf.Int32Value num_of_decimal_price = 16;
+    google.protobuf.Int32Value num_of_decimal_qty = 17;
+    google.protobuf.StringValue price_denomination = 18;
+    google.protobuf.StringValue price_unit = 19;
+    google.protobuf.StringValue primary_leg_symbol = 20;
+    google.protobuf.StringValue product_description = 21;
+    google.protobuf.Int32Value product_id = 22;
+    google.protobuf.StringValue product_name = 23;
+    google.protobuf.StringValue secondary_leg_symbol = 24;
+    int32 security_definition_id = 25;
+    google.protobuf.StringValue start_date = 26;
+    google.protobuf.Int32Value strip_id = 27;
+    google.protobuf.StringValue strip_name = 28;
+    google.protobuf.FloatValue tick_value = 29;
+    google.protobuf.StringValue underlying_Cfi_code = 30;
+    google.protobuf.FloatValue UnderlyingContractMultiplier = 31;
+    google.protobuf.StringValue underlying_maturity_date = 32;
+    google.protobuf.StringValue underlying_security_desc = 33;
+    google.protobuf.StringValue underlying_security_id = 34;
+    google.protobuf.StringValue underlying_security_id_source = 35;
+    google.protobuf.StringValue underlying_symbol = 36;
+    google.protobuf.StringValue underlying_unit_of_measure = 37;
+    google.protobuf.Timestamp start_date_as_date = 38;
+    ProductGrpc product = 39;
+}
+
+message TradePortfolioGrpc {
+    int32 portfolio_id = 1;
+    string name = 2;
+}
+
+message TradeGroupGrpc {
+    int32 group_id = 1;
+}
+
+message TradeCaptureGrpc {
+	TradePortfolioGrpc buy_book = 1;
+    google.protobuf.StringValue cfi_code = 2; 
+    google.protobuf.StringValue cl_ord_id = 3;
+    google.protobuf.StringValue clearing_account_id = 4;
+    google.protobuf.StringValue clearing_firm = 5;
+    google.protobuf.StringValue created_by = 6;
+    google.protobuf.StringValue edit_cancel_reason = 7;
+    google.protobuf.StringValue exchange = 8;
+    google.protobuf.StringValue exec_id = 9;
+    google.protobuf.StringValue exec_type = 10;
+    google.protobuf.StringValue executing_firm = 11;
+    google.protobuf.StringValue leg_ref_id = 12;
+    google.protobuf.Int32Value num_of_cycles = 13;
+    google.protobuf.Int32Value num_of_lots = 14;
+    google.protobuf.StringValue ord_status = 15;
+    google.protobuf.StringValue order_id = 16;
+    google.protobuf.StringValue orig_trade_id = 17;
+    google.protobuf.StringValue origination_firm = 18;
+    google.protobuf.StringValue origination_trader = 19;
+    google.protobuf.Int32Value parent_id = 20;
+    google.protobuf.FloatValue price = 21;
+    google.protobuf.FloatValue quantity = 22;
+    google.protobuf.FloatValue total_qty = 23;
+    google.protobuf.FloatValue average_px = 24;
+    google.protobuf.StringValue security_id = 25;
+    google.protobuf.StringValue security_id_source = 26;
+    TradePortfolioGrpc sell_book = 27;
+    google.protobuf.StringValue side = 28; 
+    google.protobuf.StringValue symbol = 29;
+    google.protobuf.Timestamp time_stamp = 30;
+    google.protobuf.Timestamp trade_date = 31;
+    google.protobuf.Timestamp trade_end_date = 32;
+    TradeGroupGrpc trade_group = 33;
+    int32 trade_id = 34;
+    google.protobuf.StringValue trade_report_id = 35;
+    google.protobuf.StringValue trade_report_trans_type = 36;
+    google.protobuf.Timestamp trade_start_date = 37;
+    google.protobuf.Int32Value trade_type = 38;
+    google.protobuf.Timestamp transact_time = 39;
+    google.protobuf.Timestamp utc_transact_time = 40;
+    google.protobuf.StringValue trd_type = 41;
+    google.protobuf.BoolValue pending = 42;
+
+    google.protobuf.FloatValue fee_exchange_db = 43;
+    google.protobuf.FloatValue fee_nfa_db = 44;
+    google.protobuf.FloatValue fee_commission_db = 45;
+    google.protobuf.FloatValue fee_clearing_db = 46;
+    google.protobuf.FloatValue fee_block_db = 47;
+    google.protobuf.FloatValue fee_platts_db = 48;
+    google.protobuf.FloatValue ice_spread_rebate_db = 49;
+
+    TradePortfolioGrpc portfolio = 50;
+
+    google.protobuf.BoolValue is_parent_time_spread = 51;
+    google.protobuf.BoolValue is_parent_trade = 52;
+    google.protobuf.BoolValue is_transfer_sell = 53;
+        
+    SecurityDefinitionGrpc security_definition = 54;
+
+    google.protobuf.FloatValue brokerage = 55;
+
+    google.protobuf.StringValue gmi_code = 56;
+
+    google.protobuf.StringValue exchange_override = 57;
+
+    google.protobuf.Timestamp expiry_date = 58;
+}
+
+message TradesSnapshotRequestGrpcMessage {
+	google.protobuf.Timestamp start_date = 1;
+    google.protobuf.Timestamp end_date = 2;
+    google.protobuf.Int32Value spread_group_trade_id = 3;
+    repeated int32 trade_ids = 4;
+    repeated int32 group_ids= 5;
+}
+
+message TradesSnapshotResponseGrpcMessage {
+	repeated TradeCaptureGrpc trade_captures = 1;
+}
+
+message TradesSubscriptionRequestGrpcMessage {
+
+}
+
+message TradesSubscriptionResponseGrpcMessage {
+
+}

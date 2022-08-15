@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Grpc.Net.Client;
 using System.Net.Security;
 using TestPositionClient.Gateway;
@@ -20,8 +21,17 @@ var httpHandler = new SocketsHttpHandler
     SslOptions = sslOptions
 };
 
-var reusableChannel = GrpcChannel.ForAddress("https://localhost:7001",
+var reusableChannel = GrpcChannel.ForAddress("https://localhost:7297",
     new GrpcChannelOptions { HttpHandler = httpHandler });
+
+var tradesClient = new TradesService.TradesServiceClient(reusableChannel);
+var trades = tradesClient.GetSnapshot(new TradesSnapshotRequestGrpcMessage
+{
+    StartDate = Timestamp.FromDateTime(new DateTime(2022, 8, 1, 0, 0, 0, DateTimeKind.Utc)),
+    EndDate = Timestamp.FromDateTime(DateTime.UtcNow)
+});
+
+
 
 var positionsClient = new PositionsService.PositionsServiceClient(reusableChannel);
 
