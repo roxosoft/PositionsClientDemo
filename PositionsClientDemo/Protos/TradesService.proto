@@ -7,7 +7,16 @@ option csharp_namespace = "TestPositionClient.Gateway";
 package positions;
 
 service TradesService {
-	rpc GetSnapshot (TradesSnapshotRequestGrpcMessage) 
+	rpc GetSnapshotByDates (TradesSnapshotRequestByDatesGrpcMessage) 
+		returns (TradesSnapshotResponseGrpcMessage);
+
+    rpc GetSnapshotByTradeIds (TradesSnapshotRequestByTradeIdsGrpcMessage) 
+		returns (TradesSnapshotResponseGrpcMessage);
+
+    rpc GetSnapshotByGroupIds (TradesSnapshotRequestByGroupIdsGrpcMessage) 
+		returns (TradesSnapshotResponseGrpcMessage);
+
+    rpc GetTimeSpreadComponents (SpreadComponentsRequestGrpcMessage) 
 		returns (TradesSnapshotResponseGrpcMessage);
 
 	rpc Subscribe (TradesSubscriptionRequestGrpcMessage) 
@@ -138,12 +147,21 @@ message TradeCaptureGrpc {
     google.protobuf.Timestamp expiry_date = 58;
 }
 
-message TradesSnapshotRequestGrpcMessage {
+message TradesSnapshotRequestByDatesGrpcMessage {
 	google.protobuf.Timestamp start_date = 1;
     google.protobuf.Timestamp end_date = 2;
-    google.protobuf.Int32Value spread_group_trade_id = 3;
-    repeated int32 trade_ids = 4;
-    repeated int32 group_ids= 5;
+}
+
+message TradesSnapshotRequestByTradeIdsGrpcMessage {
+    repeated int32 trade_ids = 1;
+}
+
+message TradesSnapshotRequestByGroupIdsGrpcMessage {
+    repeated int32 group_ids = 1;
+}
+
+message SpreadComponentsRequestGrpcMessage {
+    google.protobuf.Int32Value spread_group_trade_id = 1;
 }
 
 message TradesSnapshotResponseGrpcMessage {
@@ -155,5 +173,5 @@ message TradesSubscriptionRequestGrpcMessage {
 }
 
 message TradesSubscriptionResponseGrpcMessage {
-
+    repeated TradeCaptureGrpc trades = 1;
 }

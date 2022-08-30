@@ -25,14 +25,37 @@ var reusableChannel = GrpcChannel.ForAddress("https://localhost:7297",
     new GrpcChannelOptions { HttpHandler = httpHandler });
 
 var tradesClient = new TradesService.TradesServiceClient(reusableChannel);
-var trades = tradesClient.GetSnapshot(new TradesSnapshotRequestGrpcMessage
+
+// Request trades snapshot by dates
+var trades = tradesClient.GetSnapshotByDates(new TradesSnapshotRequestByDatesGrpcMessage
 {
     StartDate = Timestamp.FromDateTime(new DateTime(2022, 8, 1, 0, 0, 0, DateTimeKind.Utc)),
     EndDate = Timestamp.FromDateTime(DateTime.UtcNow)
 });
 
+// Subscribe to trades updates
+using var tradesSubscription = tradesClient.Subscribe(new TradesSubscriptionRequestGrpcMessage());
+try
+{
+    while (await tradesSubscription.ResponseStream.MoveNext(new CancellationToken(false)))
+    {
+        var tradesUpdateMessage = tradesSubscription.ResponseStream.Current;
+
+        Console.WriteLine("Trades batch received");
+        foreach (var trade in tradesUpdateMessage.Trades)
+        {
+            Console.WriteLine($"{trade.TradeId} | {trade.SecurityDefinition.ProductDescription,-25} | {trade.Side,-4}");
+        }
+        Console.WriteLine();
+    }
+}
+catch (RpcException)
+{
+
+}
 
 
+// Subscribe to positions updates
 var positionsClient = new PositionsService.PositionsServiceClient(reusableChannel);
 
 using var positionsSubscription = positionsClient.Subscribe(new PositionsSubscriptionRequestGrpcMessage());
