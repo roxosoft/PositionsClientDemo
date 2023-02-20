@@ -15,7 +15,7 @@ Write down the connection string to the App Configuration.
 
 ### Login to Azure container registry
 ```
-docker login mandara.azurecr.io
+docker login mandaracapital.azurecr.io
 ```
 Use the provided credentials.
 
