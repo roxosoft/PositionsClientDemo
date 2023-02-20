@@ -21,7 +21,7 @@ Use the provided credentials.
 
 ### Run the container
 ```
-docker run -d -p <INCOMING_PORT>:443 -e "ConnectionStrings:AppConfig=<APP-CONFIGURATION-CONNECTION-STRING>" mandara.azurecr.io/positionsservice:1.0.1
+docker run -d -p <INCOMING_PORT>:443 -e "ConnectionStrings:AppConfig=<APP-CONFIGURATION-CONNECTION-STRING>" mandaracapital.azurecr.io/positionsservice:1.1.0-alpha.8
 ```
 
 The steps above should configure and run the Positions Service inside a Docker container. Next, use the sample code from this repository to connect to the service and subscribe to position updates.
